@@ -2,16 +2,23 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+html {
+  font-size: 95%;
+}
+
 #container {
-  width: 500px;
+  width: 50%;
   margin: 0 auto;
 }
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   /* border: 1px solid #e5e5e5; */
 }
+
 ul li {
   padding: 10px;
   /* padding-left: 0; */
@@ -20,9 +27,11 @@ ul li {
   align-items: inherit;
   align-items: center;
 }
+
 ul li:hover {
   background: #f3f3f3;
 }
+
 #list input {
   padding: 0;
   height: initial;
@@ -51,6 +60,7 @@ ul li:hover {
   cursor: pointer;
   margin-right: 10px;
 }
+
 #list input:checked + label:after {
   content: "";
   display: block;
@@ -63,35 +73,54 @@ ul li:hover {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
 #list input:checked + label:before {
   background: #0079bf;
 }
+
 #list input:checked + label {
   text-decoration: line-through;
 }
+
 .delete {
   height: 28px;
   padding: 5px 0px;
   border-radius: 3px;
 }
+
 .delete:hover {
   background: #f2f2f2;
   cursor: pointer;
 }
+
 h1 {
   text-align: center;
+  color: grey;
 }
+
 .add-task {
   width: 100%;
   outline: none;
   font-size: 15px;
   padding: 11px;
-  border: 1px solid #f3f3f3;
+  border: 1px solid #dfdcdc;
   margin-bottom: 3px;
 }
+
 #total-tasks {
   margin-bottom: 20px;
   font-size: 13px;
   margin-left: 2px;
   color: gray;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  #container {
+    width: 90%;
+  }
+
+  html {
+    font-size: 60%;
+  }
 }
