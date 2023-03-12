@@ -3,9 +3,46 @@ const taskList = document.getElementById("list");
 const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
 
-function renderList() {}
+function addTaskToDOM(task) {
+  const li = document.createElement("li");
 
-function markTaskAsComplete(taskId) {}
+  li.innerHTML = `
+    <input type="checkbox" id="${task.id}" ${
+    task.done ? "checked" : ""
+  } class="custom-checkbox">
+    <label for="${task.id}">${task.text}</label>
+    <img src="bin.svg" class="delete" data-id="${task.id}">
+    `;
+
+  taskList.append(li);
+}
+
+function renderList() {
+  taskList.innerHTML = "";
+
+  for (let i = 0; i < tasks.length; i++) {
+    addTaskToDOM(tasks[i]);
+  }
+
+  tasksCounter.innerHTML = tasks.length;
+}
+
+function toggleTask(taskId) {
+  const task = tasks.filter((task) => {
+    return task.id === taskId;
+  });
+
+  if (task.length > 0) {
+    const currentTask = task[0];
+
+    currentTask.done = !currentTask.done;
+    renderList();
+    showNotification("Task toggled successfully!");
+    return;
+  }
+
+  showNotification("Could not toggle the task");
+}
 
 function deleteTask(taskId) {
   const newTasks = tasks.filter((task) => {
