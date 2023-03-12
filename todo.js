@@ -3,6 +3,7 @@ const taskList = document.getElementById("list");
 const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
 
+// adding task to dom
 function addTaskToDOM(task) {
   const li = document.createElement("li");
 
@@ -17,6 +18,7 @@ function addTaskToDOM(task) {
   taskList.append(li);
 }
 
+// rendering the task list
 function renderList() {
   taskList.innerHTML = "";
 
@@ -27,6 +29,7 @@ function renderList() {
   tasksCounter.innerHTML = tasks.length;
 }
 
+// toggling the task from mark as completed to not completed
 function toggleTask(taskId) {
   const task = tasks.filter((task) => {
     return task.id === taskId;
@@ -44,6 +47,7 @@ function toggleTask(taskId) {
   showNotification("Could not toggle the task");
 }
 
+// deleting a task
 function deleteTask(taskId) {
   const newTasks = tasks.filter((task) => {
     return task.id !== taskId;
@@ -54,6 +58,7 @@ function deleteTask(taskId) {
   showNotification("Task deleted successfully");
 }
 
+// adding a task to tasks list
 function addTask(task) {
   if (task) {
     tasks.push(task);
@@ -65,8 +70,12 @@ function addTask(task) {
   showNotification("Task can not be added");
 }
 
-function showNotification(text) {}
+// showing alert notification
+function showNotification(text) {
+  alert(text);
+}
 
+// handling the input from input box
 function handleInputKeyPress(e) {
   if (e.key === "Enter") {
     const text = e.target.value;
@@ -87,4 +96,29 @@ function handleInputKeyPress(e) {
   }
 }
 
-addTaskInput.addEventListener("keyup", handleInputKeyPress);
+// adding click listener to delete icon and checkbox by event delegation process
+function handleClickListener(e) {
+  const target = e.target;
+  console.log(target);
+
+  if (target.className === "delete") {
+    const taskId = target.dataset.id;
+    deleteTask(taskId);
+    return;
+  } else if (target.className === "custom-checkbox") {
+    const taskId =
+      target.id; /*dataset is not added in this element so directly choosing id as id is present */
+    toggleTask(taskId);
+    return;
+  }
+}
+
+function initializeApp() {
+  addTaskInput.addEventListener("keyup", handleInputKeyPress);
+  document.addEventListener(
+    "click",
+    handleClickListener
+  ); /* event delegation adding click listener to the whole DOM */
+}
+
+initializeApp();
