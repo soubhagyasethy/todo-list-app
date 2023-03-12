@@ -3,16 +3,26 @@ const taskList = document.getElementById("list");
 const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
 
+function fetchTodos() {
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((data) => {
+      tasks = data.slice(0, 10);
+      renderList();
+    })
+    .catch((error) => console.log("Error: ", error));
+}
+
 // adding task to dom
 function addTaskToDOM(task) {
   const li = document.createElement("li");
 
   li.innerHTML = `
     <input type="checkbox" id="${task.id}" ${
-    task.done ? "checked" : ""
+    task.completed ? "checked" : ""
   } class="custom-checkbox">
-    <label for="${task.id}">${task.text}</label>
-    <img src="bin.svg" class="delete" data-id="${task.id}">
+    <label for="${task.id}">${task.title}</label>
+    <img src="bin.svg" class="delete" id="${task.id}">
     `;
 
   taskList.append(li);
@@ -32,13 +42,13 @@ function renderList() {
 // toggling the task from mark as completed to not completed
 function toggleTask(taskId) {
   const task = tasks.filter((task) => {
-    return task.id === taskId;
+    return task.id === Number(taskId);
   });
 
   if (task.length > 0) {
     const currentTask = task[0];
 
-    currentTask.done = !currentTask.done;
+    currentTask.completed = !currentTask.completed;
     renderList();
     showNotification("Task toggled successfully!");
     return;
@@ -50,7 +60,7 @@ function toggleTask(taskId) {
 // deleting a task
 function deleteTask(taskId) {
   const newTasks = tasks.filter((task) => {
-    return task.id !== taskId;
+    return task.id !== Number(taskId);
   });
 
   tasks = newTasks;
@@ -86,9 +96,9 @@ function handleInputKeyPress(e) {
     }
 
     const task = {
-      text: text,
+      title: text,
       id: Date.now().toString(),
-      done: false,
+      completed: false,
     };
 
     e.target.value = "";
@@ -98,11 +108,10 @@ function handleInputKeyPress(e) {
 
 // adding click listener to delete icon and checkbox by event delegation process
 function handleClickListener(e) {
-  const target = e.target;
   console.log(target);
 
   if (target.className === "delete") {
-    const taskId = target.dataset.id;
+    const taskId = target.id;
     deleteTask(taskId);
     return;
   } else if (target.className === "custom-checkbox") {
@@ -119,6 +128,7 @@ function initializeApp() {
     "click",
     handleClickListener
   ); /* event delegation adding click listener to the whole DOM */
+  fetchTodos();
 }
 
 initializeApp();
