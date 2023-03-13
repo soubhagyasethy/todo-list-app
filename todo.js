@@ -3,14 +3,22 @@ const taskList = document.getElementById("list");
 const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
 
-function fetchTodos() {
-  fetch("https://jsonplaceholder.typicode.com/todos")
-    .then((res) => res.json())
-    .then((data) => {
-      tasks = data.slice(0, 10);
-      renderList();
-    })
-    .catch((error) => console.log("Error: ", error));
+async function fetchTodos() {
+  //   fetch("https://jsonplaceholder.typicode.com/todos")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       tasks = data.slice(0, 10);
+  //       renderList();
+  //     })
+  //     .catch((error) => console.log("Error: ", error));
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+    const data = await response.json();
+    tasks = data.slice(0, 10);
+    renderList();
+  } catch (error) {
+    console.log("Error: ", error);
+  }
 }
 
 // adding task to dom
@@ -108,7 +116,7 @@ function handleInputKeyPress(e) {
 
 // adding click listener to delete icon and checkbox by event delegation process
 function handleClickListener(e) {
-  console.log(target);
+  const target = e.target;
 
   if (target.className === "delete") {
     const taskId = target.id;
